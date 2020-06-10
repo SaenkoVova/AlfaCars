@@ -91,6 +91,7 @@ import StarRating from 'vue-star-rating';
 import 'viewerjs/dist/viewer.css';
 import Viewer from 'v-viewer';
 import Vue from 'vue';
+import config from '../proxy';
 Vue.use(Viewer);
 
 export default {
@@ -148,7 +149,7 @@ export default {
     },
     created() {
         const Axios = require('axios');
-        Axios.get('http://localhost:5000/api/products/getproduct', {params: {
+        Axios.get(`${config.path}/products/getproduct`, {params: {
             productSlag: this.productSlag
         }})
             .then((data) => {

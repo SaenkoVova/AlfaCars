@@ -13,6 +13,7 @@
 <script>
 
 import DetailsList from '../components/DetailsList';
+import config from '../proxy';
 
 export default {
   props: {
@@ -47,7 +48,7 @@ export default {
   },
   created() {
       const Axios = require('axios');
-      Axios.get('http://localhost:5000/api/products',{params: {
+      Axios.get(`${config.path}/products`,{params: {
           subDetailCategorySlag: this.subDetailCategorySlag
       }})
         .then((data) => {

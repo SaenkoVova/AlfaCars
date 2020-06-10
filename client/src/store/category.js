@@ -1,5 +1,5 @@
 const Axios = require('axios');
-
+import config from '../proxy';
 export default {
     state: {
         categories: [],
@@ -15,7 +15,7 @@ export default {
     },
     actions: {
         GET_CATEGORIES({commit}) {
-            Axios.get('http://localhost:5000/api/categories')
+            Axios.get(`${config.path}/categories`)
                 .then((data) => {
                     commit('SET_CATEGORIES', data.data.carCategories);
                     commit('SET_SUBCATEGORIES', data.data.cars);

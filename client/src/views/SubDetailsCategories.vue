@@ -14,6 +14,7 @@
 
 import SubCategoriesList from '../components/SubCategoriesList';
 import Grid from '../components/Grid';
+import config from '../proxy';
 
 export default {
     props: {
@@ -48,7 +49,7 @@ export default {
     },
     created() {
         const Axios = require('axios');
-        Axios.get(`http://localhost:5000/api/categories/subdetailcategory`, {params: {
+        Axios.get(`${config.path}/categories/subdetailcategory`, {params: {
             detailCategorySlag: this.detailCategorySlag
         }})
             .then((data) => {
