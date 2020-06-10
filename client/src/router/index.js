@@ -11,6 +11,18 @@ Vue.use(VueRouter)
     component: Home
   },
   {
+    path: '/contacts',
+    component: () => import('../views/Contacts')
+  },
+  {
+    path: '/delivery',
+    component: () => import('../views/Delivery')
+  },
+  {
+    path: '/guarantee',
+    component: () => import('../views/Guarantee')
+  },
+  {
     path: '/signup',
     component: () => import('../views/SignUp')
   },
