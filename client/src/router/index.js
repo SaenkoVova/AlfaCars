@@ -11,17 +11,51 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/signup',
+    component: () => import('../views/SignUp')
+  },
+  {
+    path: '/signup/success',
+    component: () => import('../views/SuccesSignup')
+  },
+  {
+    path: '/profile',
+    component: () => import('../views/Profile')
+  },
+  {
+    path: '/signin',
+    component: () => import('../views/SignIn')
+  },
+  {
+    path: '/:slag',
+    component: () => import('../views/Cars'),
+    props: true
+  },
+  {
+    path: '/:slag/:carSlag',
+    component: () => import('../views/DetailsCategories'),
+    props: true
+  },
+  {
+    path: '/:slag/:carSlag/:detailCategorySlag',
+    component: () => import('../views/SubDetailsCategories'),
+    props: true
+  },
+  {
+    path: '/:slag/:carSlag/:detailCategorySlag/:subDetailCategorySlag',
+    component: () => import('../views/Details'),
+    props: true
+  },
+  {
+    path: '/:slag/:carSlag/:detailCategorySlag/:subDetailCategorySlag/:productSlag',
+    component: () => import('../views/ProductDetails'),
+    props: true
   }
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: "history"
 })
 
 export default router

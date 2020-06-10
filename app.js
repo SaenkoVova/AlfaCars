@@ -3,9 +3,10 @@ const config = require('config');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const AuthRoute = require('./routes/auth.routes');
-const LoadRoute = require('./routes/product.routes');
-const CommentRoute = require('./routes/comment.route');
+const AuthRoute = require('./routes/auth.route');
+const CategoriesRoute = require('./routes/categories.route');
+const ProductsRoute = require('./routes/product.route');
+const ReviewsRoute = require('./routes/reviews.route');
 
 const app = express();
 
@@ -15,9 +16,11 @@ app.use(express.json({ extended: true }));
 
 app.use('/api/auth', AuthRoute);
 
-app.use('/api/load', LoadRoute);
+app.use('/api/categories', CategoriesRoute);
 
-app.use('/api/send', CommentRoute);
+app.use('/api/products', ProductsRoute);
+
+app.use('/api/reviews', ReviewsRoute);
 
 const PORT = config.get('port') || 5000;
 
@@ -31,9 +34,6 @@ if(process.env.NODE_ENV === 'production') {
     app.get('/admin', (req, res) => {
         res.sendFile(path.join(__dirname, 'admin', 'dist', 'index.html'));
     })
-    
-    
-    
 }
 
 async function start() {
