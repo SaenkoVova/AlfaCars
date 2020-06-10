@@ -92,3 +92,11 @@ exports.signIn = async (req, res) => {
         res.status(500).json({message: 'Щось пішло не так, спробуйте знову'});
     }
 };
+
+exports.getUser = async (req, res) => {
+    try {
+        
+    } catch(e) {
+        res.status(500);
+    }
+};

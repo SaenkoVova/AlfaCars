@@ -19,6 +19,11 @@ router.post(
         check('password', 'Мінімальна довжина пароля 6 символів').isLength({min: 6})
     ],
     AuthController.signIn
+);
+
+router.get(
+    '/getuser',
+    
 )
 
 module.exports = router;
