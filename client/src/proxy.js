@@ -1,3 +1,3 @@
 export default {
-    path: 'http://localhost:5000/api'
+    path: 'http://5.101.50.175:80/api'
 }
