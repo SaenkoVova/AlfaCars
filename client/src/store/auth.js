@@ -2,14 +2,21 @@ const Axios = require('axios');
 import config from '../proxy';
 export default {
     state: {
-        user: null,
         isAuthenticated: false,
         token: JSON.parse(window.localStorage.getItem('token')) || null
     },
     mutations: {
-        SET_USER(state, payload) {
-            state.user = payload;
+        SET_AUTH(state, payload) {
             state.isAuthenticated = true;
+            state.token = payload;
+            window.localStorage.removeItem('token');
+            window.localStorage.setItem('token', JSON.stringify(payload));
+
+        },
+        UNSET_AUTH(state) {
+            state.isAuthenticated = false;
+            state.token = null
+            window.localStorage.removeItem('token');
         }
     },
     actions: {
@@ -30,7 +37,7 @@ export default {
                 password: payload.password
             })
                 .then((res) => {
-                    commit('SET_USER', res.data);
+                    commit('SET_AUTH', res.data.token);
                     commit('SET_PROCESSING', false);
                 })
                 .catch((err) => {
@@ -47,7 +54,7 @@ export default {
                 password: payload.password
             })
                 .then((res) => {
-                    commit('SET_USER', res.data);
+                    commit('SET_AUTH', res.data.token);
                     commit('SET_PROCESSING', false);
                 })
                 .catch((err) => {
@@ -56,18 +63,15 @@ export default {
                     commit('CLEAN_ERROR');
                 })
         },
-        GET_USER({commit}, payload) {
-            commit('CLEAN_ERROR');
-            Axios.get(`${config.path}/auth/getuser`)
-                .then((res) => {
-                    console.log(res.data);
-                })
-                .catch((err) => {
-                    console.log(err, payload)
-                })
+        LOG_OUT({commit}) {
+            commit('SET_PROCESSING', true);
+            commit('UNSET_AUTH');
+            commit('UNSET_USER');
+            commit('SET_PROCESSING', false);
         }
     },
     getters: {
-        isAuthenticated: (state) => state.isAuthenticated
+        isAuthenticated: (state) => state.isAuthenticated,
+        getToken: (state) => state.token
     }
 }

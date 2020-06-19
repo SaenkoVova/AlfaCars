@@ -7,6 +7,8 @@ const AuthRoute = require('./routes/auth.route');
 const CategoriesRoute = require('./routes/categories.route');
 const ProductsRoute = require('./routes/product.route');
 const ReviewsRoute = require('./routes/reviews.route');
+const UserRoute = require('./routes/user.route');
+const WishListRoute = require('./routes/wishlist.route');
 
 const app = express();
 
@@ -22,12 +24,16 @@ app.use('/api/products', ProductsRoute);
 
 app.use('/api/reviews', ReviewsRoute);
 
+app.use('/api/user', UserRoute);
+
+app.use('/api/wishlist', WishListRoute);
+
 const PORT = config.get('port') || 5000;
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client', 'dist')));
     
-    app.get('/', (req, res) => {
+    app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
     })
 }

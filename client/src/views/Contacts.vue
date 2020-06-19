@@ -24,6 +24,14 @@
           </div>
       </div>
       <h1 class="section-title sub-title underlined-title">Написати нам</h1>
+      <div v-if="response" class="d-flex justify-space-between success-container">
+          <div>
+              <span>{{response}}</span>
+          </div>
+          <div>
+              <button @click="closeMessage">x</button>
+          </div>
+      </div>
       <form class="review-form" @submit.prevent="sendMessage">
           <div class="label">
               <span class="text-danger">*</span>
@@ -56,15 +64,36 @@
 </template>
 
 <script>
+
+import config from '../proxy';
+import Axios from 'axios';
+
 export default {
     data: () => ({
         name: null,
         email: null,
-        message: null
+        message: null,
+        response: null
     }),
     methods: {
+        closeMessage() {
+            this.response = null;
+        },
         sendMessage() {
-
+            Axios.post(`${config.path}/reviews/message`, {
+                name: this.name,
+                email: this.email,
+                message: this.message
+            })
+                .then((res) => {
+                    this.response = res.data.message;
+                    this.name = null;
+                    this.email = null;
+                    this.message = null;
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         }
     }
 }
@@ -127,5 +156,12 @@ export default {
     .text-danger {
         color: red;
         margin-right: 2px;
+    }
+    .success-container {
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #3c763d;
+        background: #dff0d8;
+        border-color: #d6e9c6;
     }
 </style>

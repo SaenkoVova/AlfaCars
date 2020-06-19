@@ -9,14 +9,14 @@
                   <option value="Від дорогих до дешевих">Від дорогих до дешевих</option>
               </select>
           </div>
-          <div class="top-filter-panel-left">
+          <!-- <div class="top-filter-panel-left">
               <span>Сортування:</span>
               <select name="order-filter" id="order-filter">
                   <option value="За замовчуанням">За замовчуанням</option>
                   <option value="Від дешевих до дорогих">Від дешевих до дорогих</option>
                   <option value="Від дорогих до дешевих">Від дорогих до дешевих</option>
               </select>
-          </div>
+          </div> -->
       </div>
       <ul class="products-list">
             <details-list-item v-for="item in details" :key="item._id" :product="item" :fullPath="fullPath"></details-list-item>

@@ -26,16 +26,6 @@ export default {
   computed: {
     getCartVisible() {
       return this.$store.getters.getCartVisible;
-    },
-    isAuthenticated() {
-      return this.$store.getters.isAuthenticated;
-    }
-  },
-  watch: {
-    isAuthenticated(val) {
-      if(val === true) {
-        this.$store.dispatch('GET_USER');
-      }
     }
   },
   components: {
@@ -44,7 +34,16 @@ export default {
     Cart
   },
   created() {
+    this.checkAuth();
     this.$store.dispatch('GET_CATEGORIES');
+  },
+  methods: {
+    checkAuth() {
+      const token = JSON.parse(window.localStorage.getItem('token')) || null;
+      if(token) {
+        this.$store.dispatch('GET_BASIC_USER_DATA', token);
+      }
+    }
   }
 };
 </script>

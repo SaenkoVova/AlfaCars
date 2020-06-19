@@ -10,6 +10,11 @@ router.get(
 router.get(
     '/getproduct',
     ProductController.getProductBySlag
+);
+
+router.post(
+    '/findbyarticle',
+    ProductController.findByArticle
 )
 
 module.exports = router;

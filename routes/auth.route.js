@@ -21,9 +21,4 @@ router.post(
     AuthController.signIn
 );
 
-router.get(
-    '/getuser',
-    
-)
-
 module.exports = router;

@@ -2,7 +2,7 @@
   <div>
       <h1 class="section-title" v-if="car && subDetailCategorySlagTitle">{{subDetailCategorySlagTitle}} на {{car.ukrTitle}}</h1>
       <div class="section-wrapper">
-        <h1>Фильтр товаров</h1>
+        <div></div>
         <div>
           <details-list :details="details" :fullPath="fullPath"></details-list>
         </div>

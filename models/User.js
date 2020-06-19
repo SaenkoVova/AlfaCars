@@ -1,4 +1,4 @@
-const {Schema, model} = require('mongoose');
+const {Schema, model, Types} = require('mongoose');
 
 const schema = new Schema({
     email: {type: String, required: true},
@@ -11,7 +11,8 @@ const schema = new Schema({
     index: {type: String, required: false, default: null},
     address: {type: String, required: false, default: null},
     newsSubscription: {type: Boolean, required: true},
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    bookmarks: [{type: Types.ObjectId, ref: 'Detail'}]
 });
 
 module.exports = model('User', schema);

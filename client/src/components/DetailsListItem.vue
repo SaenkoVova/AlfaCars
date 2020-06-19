@@ -57,7 +57,7 @@
                         <button v-if="finded == false && product.quantity !== 0" @click="addToCart" class="btn btn-rounded-left">Купити</button>
                         <button v-else-if="finded == false && product.quantity === 0" class="btn btn-rounded-left">Немає в наявності</button>
                         <button v-else @click="changeCartVisible" class="btn btn-rounded-left">Товар уже в корзині</button>
-                        <button class="btn btn-rounded-right">♥</button>
+                        <button class="btn btn-rounded-right" @click="addToWishList">♥</button>
                     </div>
                     <div>
                         <span class="price">{{product.price}}грн</span>
@@ -72,6 +72,8 @@
 
 import StarRating from 'vue-star-rating';
 import Vue from 'vue';
+import Axios from 'axios';
+import config from '../proxy'
 
 export default {
     props: {
@@ -111,6 +113,18 @@ export default {
         },
         changeCartVisible() {
             this.$store.dispatch('CHANGE_CART_VISIBLE');
+        },
+        addToWishList() {
+            Axios.post(`${config.path}/wishlist`, {productId: this.product._id},
+                {
+                    headers: {
+                        Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('token'))}`
+                    }
+                }
+            )
+                .then(() => {
+                    this.$store.dispatch('ADD_TO_WISHLIST', {productId: this.product._id});
+                })
         }
     },
     created() {

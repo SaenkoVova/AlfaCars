@@ -8,19 +8,25 @@
                     </router-link>
                 </ul>
                 <ul class="d-flex">
-                    <router-link :to="'/bookmarks'">
+                    <router-link :to="'/wishlist'" v-if="getUser">
+                        <li class="btn">
+                            <span>Закладки </span>
+                            <span class="badge">{{getUser.bookmarks.length}}</span>
+                        </li>
+                    </router-link>
+                    <router-link :to="'/wishlist'" v-else>
                         <li class="btn">
                             <span>Закладки </span>
                             <span class="badge">0</span>
                         </li>
                     </router-link>
-                    <router-link :to="'/compare'">
+                    <!-- <router-link :to="'/compare'">
                         <li class="btn">
                             <span>Порівняння товарів </span>
                             <span class="badge">0</span>
                         </li>
-                    </router-link>
-                    <div class="btn" @click="tabVisible = !tabVisible">
+                    </router-link> -->
+                    <div v-if="profileButtonVisible === false" class="btn" @click="tabVisible = !tabVisible">
                         <span>Особистий кабінет</span>
                         <div v-if="tabVisible" class="action-tab">
                             <router-link :to="'/signin'">
@@ -30,6 +36,11 @@
                                 <span class="action-tab-text">Реєстрація</span>
                             </router-link>
                         </div>
+                    </div>
+                    <div v-else>
+                        <router-link :to="'/profile'" v-if="getUser">
+                            <button class="btn">{{getUser.username}}</button>
+                        </router-link>
                     </div>
                 </ul>
             </div>
@@ -57,7 +68,7 @@
                 </ul>
                 <span class="hint">Підбір і замовлення запчастин, з 9:00 до 18:00</span>
             </div>
-            <menu class="menu">
+            <menu class="menu" style="visibility: hidden">
                 <ul class="d-flex">
                     <router-link :to="'/get-by-vin-code'">
                         <li class="menu-item">Запит по VIN-коду</li>
@@ -71,7 +82,7 @@
                 </ul>
             </menu>
             <nav class="nav">
-                <button>
+                <button @click="burgerActivated = !burgerActivated">
                     <span>Категорії</span>
                     <div class="burger">
                         <span></span>
@@ -79,10 +90,10 @@
                 </button>
             </nav>
             <div class="serch-panel">
-                <form>
-                    <button class="left-button">Везде</button>
-                    <input class="search-input" type="text" placeholder="Введіть код запчастини">
-                    <button class="right-button">Find</button>
+                <form @submit="findByArticle">
+                    <button class="left-button"></button>
+                    <input class="search-input" type="text" placeholder="Введіть код запчастини" v-model="article">
+                    <input type="submit" class="right-button" value="Знайти">
                 </form>
             </div>
             <button class="cart" @click="toggleCartVisible">
@@ -90,7 +101,7 @@
                     {{getFullOrdered}} товарів, на {{fullSum}} грн
                 </span>
             </button>
-            <cars-categories-list v-if="bottomHeaderPartVisible" class="categories"></cars-categories-list>
+            <cars-categories-list v-if="bottomHeaderPartVisible || burgerActivated" class="categories"></cars-categories-list>
             <slider v-if="bottomHeaderPartVisible" class="slider"></slider>  
         </div>
     </header>
@@ -100,11 +111,17 @@
 
 import CarsCategoriesList from '../components/CarsCategoriesList';
 import Slider from '../components/Slider';
+import Axios from 'axios';
+import config from '../proxy';
 
 export default {
     data: () => ({
         tabVisible: false,
         bottomHeaderPartVisible: true,
+        bookmarksCounter: 0,
+        burgerActivated: false,
+        profileButtonVisible: false,
+        article: null,
         leftPull: [
             {
                 title: 'Гарантія',
@@ -128,6 +145,12 @@ export default {
             return this.$store.getters.getCart.reduce((accumulator, currentValue) => {
                 return accumulator + currentValue.ordered;
             }, 0);
+        },
+        isAuthenticated() {
+            return this.$store.getters.isAuthenticated;
+        },
+        getUser() {
+            return this.$store.getters.getUser;
         }
     },
     components: {
@@ -140,6 +163,9 @@ export default {
                 this.bottomHeaderPartVisible = true
             else
                 this.bottomHeaderPartVisible = false
+        },
+        isAuthenticated(status) {
+            this.profileButtonVisible = status;
         }
     },
     created() {
@@ -151,6 +177,12 @@ export default {
     methods: {
         toggleCartVisible() {
             this.$store.dispatch('CHANGE_CART_VISIBLE');
+        },
+        findByArticle() {
+            Axios.post(
+                `${config.path}/products/findbyarticle`,
+                {article: this.article}
+            )
         }
     }
 }
@@ -181,6 +213,7 @@ export default {
         box-shadow: 0 6px 12px rgba(0,0,0,0.175);
         border-radius: 4px;
         padding: 4px 0;
+        z-index: 1000;
     }
     .action-tab-text {
         padding: 5px 14px;
@@ -193,6 +226,7 @@ export default {
     .header-bottom {
         padding: 50px 0;
         display: grid;
+        position: relative;
         grid-template-columns: 270px 1fr 1fr auto;
         grid-template-rows: auto 30px auto auto;
         grid-column-gap: 20px;
@@ -207,7 +241,11 @@ export default {
     }
     .categories {
         grid-area: categories-list;
+        position: absolute;
         z-index: 100;
+        background: #fff;
+        left: 0;
+        right: 0;
     }
     .logo {
         grid-area: logo;

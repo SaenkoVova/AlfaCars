@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,15 @@ Vue.use(VueRouter)
     component: () => import('../views/Guarantee')
   },
   {
+    path: '/wishlist',
+    component: () => import('../views/WishList'),
+    beforeEnter: AuthGuard
+  },
+  {
+    path: '/compare',
+    component: () => import('../views/Compare')
+  },
+  {
     path: '/signup',
     component: () => import('../views/SignUp')
   },
@@ -32,7 +42,8 @@ Vue.use(VueRouter)
   },
   {
     path: '/profile',
-    component: () => import('../views/Profile')
+    component: () => import('../views/Profile'),
+    beforeEnter: AuthGuard
   },
   {
     path: '/signin',
@@ -69,5 +80,14 @@ const router = new VueRouter({
   routes,
   mode: "history"
 })
+
+function AuthGuard(from, to, next) {
+  if(Store.getters.isAuthenticated) {
+    next();
+  }
+  else {
+    next('/signin');
+  }
+}
 
 export default router

@@ -2,6 +2,7 @@ const Detail = require('../models/Detail');
 const SubDetailCategory = require('../models/SubDetailCategory');
 const ProductImage = require('../models/ProductImage');
 const Review = require('../models/Review');
+const { response } = require('express');
 
 
 exports.getProducts = async (req, res) => {
@@ -34,3 +35,15 @@ exports.getProductBySlag = async (req, res) => {
     }
     
 };
+
+exports.findByArticle = async (req, res) => {
+    try {
+        const {article} = req.body;
+        const product = await Product.find({article});
+        res.status(200).json({
+            product
+        })
+    } catch(e) {
+        res.status(500).json({message: 'Щось пішло не так спробуйте знову'});
+    }
+}

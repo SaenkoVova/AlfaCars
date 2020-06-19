@@ -7,4 +7,9 @@ router.post(
     ReviewController.doReview
 );
 
+router.post(
+    '/message',
+    ReviewController.doMessage
+)
+
 module.exports = router;
