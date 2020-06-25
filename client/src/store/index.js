@@ -5,6 +5,7 @@ import CategoryModule from './category'
 import CartModule from './cart'
 import AuthModule from './auth'
 import UserModule from './user'
+import CompareModule from './compare'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     CategoryModule,
     CartModule,
     AuthModule,
-    UserModule
+    UserModule,
+    CompareModule
   }
 })

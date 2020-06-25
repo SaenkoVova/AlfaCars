@@ -1,7 +1,7 @@
 <template>
   <div>
       <h1 class="section-title">Мої закладки</h1>
-        <table>
+        <table v-if="getBookmarksLength !== 0">
             <tr>
                 <th>Зображення</th>
                 <th>Назва товару</th>
@@ -13,6 +13,9 @@
             <wish-list-item v-for="item in wishList" :key="item._id" :product="item"
             v-on:removeFromWishList="removeFromWishList"></wish-list-item>
         </table>
+        <div v-else>
+            <p>Ви нічого не додавали до закладинок</p>
+        </div>
   </div>
 </template>
 
@@ -26,6 +29,11 @@ export default {
     data: () => ({
         wishList: []
     }),
+    computed: {
+        getBookmarksLength() {
+            return this.$store.getters.getBookmarksLength;
+        }
+    },
     created() {
         this.getWishList();
     },

@@ -57,7 +57,7 @@
                         <button v-if="finded == false && product.quantity !== 0" @click="addToCart" class="btn btn-rounded-left">Купити</button>
                         <button v-else-if="finded == false && product.quantity === 0" class="btn btn-rounded-left">Немає в наявності</button>
                         <button v-else @click="changeCartVisible" class="btn btn-rounded-left">Товар уже в корзині</button>
-                        <button class="btn btn-rounded-right" @click="addToWishList">♥</button>
+                        <button v-if="addedToWishlist == false" class="btn btn-rounded-right" @click="addToWishList">♥</button>
                     </div>
                     <div>
                         <span class="price">{{product.price}}грн</span>
@@ -88,16 +88,31 @@ export default {
     },
     data: () => ({
         finded: false,
-        ordered: 1
+        ordered: 1,
+        addedToWishlist: false
     }),
     computed: {
         getCart() {
             return this.$store.getters.getCart;
+        },
+        getUser() {
+            return this.$store.getters.getUser;
+        },
+        getWishlist() {
+            if(this.getUser) {
+                return this.$store.getters.getUser.bookmarks
+            }
+            else {
+                return null
+            }
         }
     },
     watch: {
         getCart() {
             this.findProductInCart(this.product._id);
+        },
+        getWishlist() {
+            this.findProductInWishList(this.product._id);
         }
     },
     methods: {
@@ -105,6 +120,12 @@ export default {
             const cart = JSON.parse(window.localStorage.getItem('cart')) || [];
             const findedProduct = cart.find(i => i._id === productId);
             findedProduct !== undefined ? this.finded = true : this.finded = false;
+        },
+        findProductInWishList(productId) {
+            if(this.getUser) {
+                const findedProduct = this.getWishlist.find(i => i === productId);
+                findedProduct !== undefined ? this.addedToWishlist = true : this.addedToWishlist = false;
+            }
         },
         addToCart() {
             Vue.set(this.product, 'ordered', this.ordered);
@@ -129,6 +150,7 @@ export default {
     },
     created() {
         this.findProductInCart(this.product._id);
+        this.findProductInWishList(this.product._id);
     },
     components: {
         StarRating

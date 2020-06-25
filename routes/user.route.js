@@ -9,5 +9,11 @@ router.get(
     UserController.getBasicUserData
 );
 
+router.get(
+    '/order',
+    auth,
+    UserController.getUserDataForOrder
+)
+
 
 module.exports = router;

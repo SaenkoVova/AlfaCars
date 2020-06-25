@@ -20,6 +20,9 @@
               <button class="btn" @click="increaseOrdered">+</button>
           </div>
       </td>
+      <td v-if="cartMode === 'orderMode'">
+          <span>{{product.price}} грн</span>
+      </td>
       <td>
           <span>{{priceByItem}}</span>
       </td>
@@ -35,6 +38,10 @@ export default {
         'product': {
             type: Object,
             required: true
+        },
+        'cartMode': {
+            type: String,
+            required: false
         }
     },
     computed: {
@@ -83,6 +90,7 @@ td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
     color: #777;
+    text-align: center;
 }
 .link {
     color: #777;

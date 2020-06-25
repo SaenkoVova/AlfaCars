@@ -17,8 +17,8 @@ export default {
         UNSET_USER(state) {
             state.user = null;
         },
-        ADD_TO_WISHLIST(state) {
-            state.user.bookmarksQuantity += 1;
+        ADD_TO_WISHLIST(state, payload) {
+            state.user.bookmarks.push(payload.productId)
         }
     },
     actions: {
@@ -40,11 +40,12 @@ export default {
                     commit('UNSET_AUTH');
                 })
         },
-        ADD_TO_WISHLIST({commit}) {
-            commit('ADD_TO_WISHLIST');
+        ADD_TO_WISHLIST({commit}, payload) {
+            commit('ADD_TO_WISHLIST', payload);
         }
     },
     getters: {
-        getUser: (state) => state.user
+        getUser: (state) => state.user,
+        getBookmarksLength: (state) => state.user.bookmarks.length
     }
 }

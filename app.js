@@ -9,6 +9,8 @@ const ProductsRoute = require('./routes/product.route');
 const ReviewsRoute = require('./routes/reviews.route');
 const UserRoute = require('./routes/user.route');
 const WishListRoute = require('./routes/wishlist.route');
+const SuplierRoute = require('./routes/suplier.route');
+const PaymentRoute = require('./routes/payment.route');
 
 const app = express();
 
@@ -27,6 +29,10 @@ app.use('/api/reviews', ReviewsRoute);
 app.use('/api/user', UserRoute);
 
 app.use('/api/wishlist', WishListRoute);
+
+app.use('/api/supliers', SuplierRoute);
+
+app.use('/api/payments', PaymentRoute);
 
 const PORT = config.get('port') || 5000;
 

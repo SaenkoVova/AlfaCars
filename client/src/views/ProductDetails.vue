@@ -44,7 +44,8 @@
                   <h1 class="section-title">{{product.price}} грн</h1>
                   <div class="d-flex justify-space-between">
                       <button class="btn">♥</button>
-                      <button class="btn">♥</button>
+                      <button v-if="!findedInCompareList" class="btn" @click="addToCompareList">♦</button>
+                      <button v-else class="btn">У списку</button>
                   </div>
               </div>
               <div>
@@ -105,6 +106,7 @@ export default {
         product: null,
         ordered: 1,
         finded: false,
+        findedInCompareList: false,
         productImages: [],
         mainImage: null,
         reviews: []
@@ -112,11 +114,17 @@ export default {
     computed: {
         getCart() {
             return this.$store.getters.getCart;
+        },
+        getCompareItems() {
+            return this.$store.getters.getCompareItems;
         }
     },
     watch: {
         getCart() {
             this.findProductInCart(this.product._id);
+        },
+        getCompareItems() {
+            this.findProductInCompare(this.product._id);
         }
     },
     methods: {
@@ -143,8 +151,16 @@ export default {
             const findedProduct = cart.find(i => i._id === productId);
             findedProduct !== undefined ? this.finded = true : this.finded = false;
         },
+        findProductInCompare(productId) {
+            const compareItems = JSON.parse(window.localStorage.getItem('compareItems')) || [];
+            const findedProduct = compareItems.find(i => i._id === productId);
+            findedProduct !== undefined ? this.findedInCompareList = true : this.findedInCompareList = false;
+        },
         changeCartVisible() {
             this.$store.dispatch('CHANGE_CART_VISIBLE');
+        },
+        addToCompareList() {
+            this.$store.dispatch('ADD_TO_COMPARE_LIST', this.product);
         }
     },
     created() {

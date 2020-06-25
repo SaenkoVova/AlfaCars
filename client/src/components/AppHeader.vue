@@ -20,12 +20,12 @@
                             <span class="badge">0</span>
                         </li>
                     </router-link>
-                    <!-- <router-link :to="'/compare'">
+                    <router-link :to="'/compare'">
                         <li class="btn">
                             <span>Порівняння товарів </span>
-                            <span class="badge">0</span>
+                            <span class="badge">{{compareCounter}}</span>
                         </li>
-                    </router-link> -->
+                    </router-link>
                     <div v-if="profileButtonVisible === false" class="btn" @click="tabVisible = !tabVisible">
                         <span>Особистий кабінет</span>
                         <div v-if="tabVisible" class="action-tab">
@@ -39,7 +39,7 @@
                     </div>
                     <div v-else>
                         <router-link :to="'/profile'" v-if="getUser">
-                            <button class="btn">{{getUser.username}}</button>
+                            <button class="btn">{{getUser.name}}</button>
                         </router-link>
                     </div>
                 </ul>
@@ -68,7 +68,7 @@
                 </ul>
                 <span class="hint">Підбір і замовлення запчастин, з 9:00 до 18:00</span>
             </div>
-            <menu class="menu" style="visibility: hidden">
+            <menu class="menu">
                 <ul class="d-flex">
                     <router-link :to="'/get-by-vin-code'">
                         <li class="menu-item">Запит по VIN-коду</li>
@@ -119,6 +119,7 @@ export default {
         tabVisible: false,
         bottomHeaderPartVisible: true,
         bookmarksCounter: 0,
+        compareCounter: 0,
         burgerActivated: false,
         profileButtonVisible: false,
         article: null,
@@ -151,6 +152,9 @@ export default {
         },
         getUser() {
             return this.$store.getters.getUser;
+        },
+        getCompareItemsLength() {
+            return this.$store.getters.getCompareItemsLength;
         }
     },
     components: {
@@ -166,6 +170,9 @@ export default {
         },
         isAuthenticated(status) {
             this.profileButtonVisible = status;
+        },
+        getCompareItemsLength(value) {
+            this.compareCounter = value;
         }
     },
     created() {
@@ -173,6 +180,9 @@ export default {
             this.bottomHeaderPartVisible = true
         else
             this.bottomHeaderPartVisible = false
+
+        const compareLength = JSON.parse(window.localStorage.getItem('compareItems')) || [];
+        this.compareCounter = compareLength.length;
     },
     methods: {
         toggleCartVisible() {

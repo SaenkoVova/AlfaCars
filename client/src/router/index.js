@@ -50,6 +50,10 @@ Vue.use(VueRouter)
     component: () => import('../views/SignIn')
   },
   {
+    path: '/order',
+    component: () => import('../views/Order')
+  },
+  {
     path: '/:slag',
     component: () => import('../views/Cars'),
     props: true
