@@ -46,6 +46,21 @@ Vue.use(VueRouter)
     beforeEnter: AuthGuard
   },
   {
+    path: '/profile/simpleedit',
+    component: () => import('../views/SimpleEdit'),
+    beforeEnter: AuthGuard
+  },
+  {
+    path: '/profile/editpassword',
+    component: () => import('../views/EditPassword'),
+    beforeEnter: AuthGuard
+  },
+  {
+    path: '/profile/editaddress',
+    component: () => import('../views/EditAddress'),
+    beforeEnter: AuthGuard
+  },
+  {
     path: '/signin',
     component: () => import('../views/SignIn')
   },

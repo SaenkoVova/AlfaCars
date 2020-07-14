@@ -7,9 +7,12 @@
     "start": "cross-env NODE_ENV=production node app.js",
     "server": "nodemon app.js",
     "client": "npm run serve --prefix client",
+    "admin": "npm run serve --prefix admin",
     "client:install": "npm install --prefix client",
     "client:build": "npm run build --prefix client",
-    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
+    "admin:install": "npm install --prefix admin",
+    "admin:build": "npm run build --prefix admin",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\" \"npm run admin\""
   },
   "repository": {
     "type": "git",
@@ -38,7 +41,9 @@
     "express": "^4.17.1",
     "express-validator": "^6.5.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.15"
+    "mongoose": "^5.9.15",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",

@@ -174,6 +174,7 @@ export default {
                 this.mainImage = this.productImages[0].image;
                 this.reviews = data.data.reviews;
                 this.findProductInCart(this.product._id);
+                this.findProductInCompare(this.product._id);
             });
     },
     components: {

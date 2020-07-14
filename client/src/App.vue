@@ -1,10 +1,13 @@
 <template>
   <v-app>
+    <vue-progress-bar></vue-progress-bar>
     <cart v-if="getCartVisible"></cart>
     <app-header></app-header>
-    <div class="container-center">
-      <router-view></router-view>
-    </div>
+      <div class="container-center">
+        <transition name="fade">
+          <router-view></router-view>
+        </transition>
+      </div>
     <div class="container-center">
       <app-footer></app-footer>
     </div>
@@ -23,6 +26,7 @@ export default {
   data: () => ({
     
   }),
+  
   computed: {
     getCartVisible() {
       return this.$store.getters.getCartVisible;
@@ -34,8 +38,13 @@ export default {
     Cart
   },
   created() {
+    this.$Progress.finish();
+    this.$Progress.start();
     this.checkAuth();
-    this.$store.dispatch('GET_CATEGORIES');
+    this.$store.dispatch('GET_CATEGORIES')
+    .then(() => {
+      this.$Progress.finish();
+    })
   },
   methods: {
     checkAuth() {

@@ -138,6 +138,11 @@ export default {
             }
         ]
     }),
+    sockets: {
+        connect: function() {
+            console.log('connected')
+        }
+    },
     computed: {
         fullSum() {
             return this.$store.getters.getFullSum;

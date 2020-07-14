@@ -42,6 +42,10 @@ export default {
         },
         ADD_TO_WISHLIST({commit}, payload) {
             commit('ADD_TO_WISHLIST', payload);
+        },
+        SOCKET_userConnected({commit}, data) {
+            console.error(commit)
+            console.log(data)
         }
     },
     getters: {

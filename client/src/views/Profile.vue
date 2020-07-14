@@ -60,15 +60,15 @@ export default {
         profileConfigList: [
             {
                 title: 'Змінити контактну інформацію',
-                path: '/simpleedit',
+                path: '/profile/simpleedit'
             },
             {
                 title: 'Змінити свій пароль',
-                path: '/password'
+                path: '/profile/editpassword'
             },
             {
                 title: 'Змінити мої адреса',
-                path: '/address'
+                path: '/profile/editaddress'
             },
             {
                 title: 'Змінити закладки',

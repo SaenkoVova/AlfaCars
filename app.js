@@ -1,4 +1,3 @@
-const express = require('express');
 const config = require('config');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -12,11 +11,11 @@ const WishListRoute = require('./routes/wishlist.route');
 const SuplierRoute = require('./routes/suplier.route');
 const PaymentRoute = require('./routes/payment.route');
 
-const app = express();
+const {app, http} = require('./socket');
 
 app.use(cors());
 
-app.use(express.json({ extended: true }));
+//app.use(server.json({ extended: true }));
 
 app.use('/api/auth', AuthRoute);
 
@@ -38,9 +37,15 @@ const PORT = config.get('port') || 5000;
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+    app.use(express.static(path.join(__dirname, 'admin', 'dist')));
     
-    app.get('*', (req, res) => {
+    app.get('/', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+    })
+
+    app.get('/admin', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'admin', 'dist', 'index.html'));
     })
 }
 
@@ -51,7 +56,7 @@ async function start() {
              useUnifiedTopology: true,
              useCreateIndex: true
          });
-         app.listen(PORT, () => console.log(`App has been started on port ${PORT} ...`));
+         http.listen(PORT, () => console.log(`App has been started on port ${PORT} ...`));
      }
     catch (e) {
         console.log('Server error', e.message);
@@ -61,6 +66,3 @@ async function start() {
 
 
 start();
-
-
-

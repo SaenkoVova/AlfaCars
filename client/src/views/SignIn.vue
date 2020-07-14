@@ -81,10 +81,15 @@ export default {
     },
     methods: {
         signIn() {
+            this.$Progress.finish();
+            this.$Progress.start();
             this.$store.dispatch('SIGN_IN', {
                 email: this.email,
                 password: this.password
-            });
+            })
+                .then(() => {
+                    this.$Progress.finish();
+                })
         }
     },
     watch: {
