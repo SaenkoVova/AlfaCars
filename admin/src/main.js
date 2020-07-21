@@ -3,8 +3,20 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
+import VueSocketIO from 'vue-socket.io'
+import SocketIO from "socket.io-client"
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+Vue.use(new VueSocketIO({
+  debug: false,
+  connection: SocketIO('http://localhost:5000'), //options object is Optional,
+  vuex: {
+      store,
+      actionPrefix: 'SOCKET_',
+      mutationPrefix: 'SOCKET_'
+  }
+}))
 
 new Vue({
   router,

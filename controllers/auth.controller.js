@@ -61,7 +61,6 @@ exports.signUp = async (req, res) => {
 
 exports.signIn = async (req, res) => {
     try {
-        console.log(req.body)
         const errors = validationResult(req);
 
         if(!errors.isEmpty()) {

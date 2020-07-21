@@ -10,12 +10,12 @@ const UserRoute = require('./routes/user.route');
 const WishListRoute = require('./routes/wishlist.route');
 const SuplierRoute = require('./routes/suplier.route');
 const PaymentRoute = require('./routes/payment.route');
-
-const {app, http} = require('./socket');
+const AdminRoute = require('./routes/admin.route');
+const {express, app, http} = require('./socket');
 
 app.use(cors());
 
-//app.use(server.json({ extended: true }));
+app.use(express.json({ extended: true }));
 
 app.use('/api/auth', AuthRoute);
 
@@ -33,7 +33,10 @@ app.use('/api/supliers', SuplierRoute);
 
 app.use('/api/payments', PaymentRoute);
 
+app.use('/api/admin', AdminRoute);
+
 const PORT = config.get('port') || 5000;
+
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client', 'dist')));
@@ -46,6 +49,16 @@ if(process.env.NODE_ENV === 'production') {
 
     app.get('/admin', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'admin', 'dist', 'index.html'));
+    })
+
+    app.get('*', (req, res) => {
+        let urlParts = req.url.split('/');
+        if(urlParts[1] === 'admin') {
+            res.sendFile(path.resolve(__dirname, 'admin', 'dist', 'index.html'));
+        }
+        else {
+            res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+        }
     })
 }
 

@@ -45,6 +45,9 @@ export default {
     .then(() => {
       this.$Progress.finish();
     })
+    this.$socket.emit('userConnected', {
+      status: 'online'
+    })
   },
   methods: {
     checkAuth() {

@@ -34,7 +34,8 @@ Vue.use(VueRouter)
   },
   {
     path: '/signup',
-    component: () => import('../views/SignUp')
+    component: () => import('../views/SignUp'),
+    beforeEnter: isAuth
   },
   {
     path: '/signup/success',
@@ -62,7 +63,8 @@ Vue.use(VueRouter)
   },
   {
     path: '/signin',
-    component: () => import('../views/SignIn')
+    component: () => import('../views/SignIn'),
+    beforeEnter: isAuth
   },
   {
     path: '/order',
@@ -106,6 +108,14 @@ function AuthGuard(from, to, next) {
   }
   else {
     next('/signin');
+  }
+}
+
+function isAuth(from, to, next) {
+  if(Store.getters.isAuthenticated) {
+    next('/profile')
+  } else {
+    next()
   }
 }
 

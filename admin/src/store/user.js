@@ -16,15 +16,12 @@ export default {
         },
         UNSET_USER(state) {
             state.user = null;
-        },
-        ADD_TO_WISHLIST(state, payload) {
-            state.user.bookmarks.push(payload.productId)
         }
     },
     actions: {
         GET_BASIC_USER_DATA({commit}, payload) {
             commit('CLEAN_ERROR');
-            Axios.get(`${config.path}/user`,
+            Axios.get(`${config.path}/admin/user`,
                 {
                     headers: {
                         Authorization: `Bearer ${payload}`
@@ -39,9 +36,6 @@ export default {
                     commit('UNSET_USER');
                     commit('UNSET_AUTH');
                 })
-        },
-        ADD_TO_WISHLIST({commit}, payload) {
-            commit('ADD_TO_WISHLIST', payload);
         }
     },
     getters: {
